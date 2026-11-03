@@ -2,6 +2,13 @@
 (() => {
   const data = window.SUNLIT_WIKI;
   const $ = (selector, root = document) => root.querySelector(selector);
+  if (!data || !Array.isArray(data.guides) || !Array.isArray(data.catalog) || !Array.isArray(data.treasureRewards)) {
+    $('#main').innerHTML = `<section class="panel" role="alert"><h1>공략을 불러오지 못했어요</h1><p>${location.protocol==='file:' ? '설치기에서 설치 / 업데이트를 눌러 공략 파일을 복구해주세요.' : '인터넷 연결을 확인하고 다시 불러와주세요.'}</p><button class="button" id="retry-wiki">다시 불러오기</button></section>`;
+    document.querySelectorAll('[data-search], [data-season], #mobile-menu').forEach(button=>button.disabled=true);
+    $('#retry-wiki').addEventListener('click',()=>location.reload());
+    document.title='공략을 불러오지 못했어요 · 우리의 선릿밸리';
+    return;
+  }
   const paths = {
     home:'M3 10 12 3l9 7M5 9v12h5v-7h4v7h5V9',
     search:'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
@@ -225,7 +232,14 @@
       event.preventDefault();
       if (focusedResult) searchIndex = searchItems.indexOf(focusedResult);
       if (event.key === 'Enter') { if (searchIndex < 0) searchIndex = 0; searchItems[searchIndex].click(); }
-      else { searchIndex = searchIndex < 0 ? (event.key === 'ArrowDown' ? 0 : searchItems.length - 1) : (searchIndex + (event.key === 'ArrowDown' ? 1 : -1) + searchItems.length) % searchItems.length; searchItems.forEach((a,i) => a.classList.toggle('selected', i === searchIndex)); searchItems[searchIndex].scrollIntoView({block:'nearest'}); }
+      else {
+        searchIndex = searchIndex < 0 ? (event.key === 'ArrowDown' ? 0 : searchItems.length - 1) : (searchIndex + (event.key === 'ArrowDown' ? 1 : -1) + searchItems.length) % searchItems.length;
+        searchItems.forEach((a,i) => a.classList.toggle('selected', i === searchIndex));
+        // Tab can move focus into the links. Keep native Enter on the same
+        // result that the arrow keys highlight; input focus stays in the input.
+        if (focusedResult) searchItems[searchIndex].focus({preventScroll:true});
+        searchItems[searchIndex].scrollIntoView({block:'nearest'});
+      }
     }
   });
   $('#mobile-menu').addEventListener('click', () => { const opened = $('#sidebar').classList.toggle('open'); $('#backdrop').hidden = !opened; $('#mobile-menu').setAttribute('aria-expanded', String(opened)); });

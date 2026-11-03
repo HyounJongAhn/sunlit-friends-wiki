@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#fbf8f1">
+  <meta name="description" content="친구들과 함께하는 선릿밸리. 처음 설치부터 농사, 통발, 보물과 포켓몬까지 쉽게 찾아보는 한국어 공략.">
+  <title>우리의 선릿밸리 · 같이 보는 공략</title>
+  <link rel="icon" href="assets/icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 건너뛰기</a>
+  <button id="backdrop" class="backdrop" aria-label="메뉴 닫기" hidden></button>
+  <aside id="sidebar" class="sidebar" aria-label="공략 메뉴">
+    <a href="#home" class="brand"><img src="assets/icon.png" alt="" width="45" height="45"><span>우리의 선릿밸리<small>같이 보는 공략</small></span></a>
+    <button class="search-open" data-search><span data-icon="search"></span><span>궁금한 걸 찾아봐요</span><kbd>Ctrl K</kbd></button>
+    <a class="home-link nav-link" href="#home"><span data-icon="home"></span>공략 첫 화면</a>
+    <nav id="navigation"></nav>
+    <div class="sidebar-note"><span class="status-dot"></span> 친구들과, 우리 속도로<p>농사도 탐험도 각자 좋아하는 만큼.</p></div>
+    <a class="repository" href="https://github.com/HyounJongAhn/sunlit-friends" target="_blank" rel="noopener noreferrer"><span data-icon="code"></span> 코드와 바뀐 내용 <span aria-hidden="true">↗</span></a>
+  </aside>
+  <div class="shell">
+    <header class="topbar">
+      <button id="mobile-menu" class="icon-button mobile-only" aria-label="공략 메뉴 열기" aria-expanded="false" aria-controls="sidebar"><span data-icon="menu"></span></button>
+      <div class="breadcrumb"><span data-icon="book"></span><span>선릿밸리 공략</span><span class="crumb-separator">/</span><span id="crumb">첫 화면</span></div>
+      <div class="season-picker" aria-label="시즌 선택"><button data-season="normal" aria-pressed="true"><span class="season-dot"></span>일반 시즌</button><button data-season="pokemon" aria-pressed="false"><span class="season-dot"></span>포켓몬 시즌</button></div>
+    </header>
+    <main id="main" tabindex="-1"></main>
+    <footer><span>함께 만드는 마을, 함께 보는 안내.</span><a href="#guide/verification">확인한 내용과 남은 검증 <span aria-hidden="true">↗</span></a><span id="version"></span></footer>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="search-heading"><h2 id="search-title">어떤 게 궁금해요?</h2><button class="icon-button" id="search-close" aria-label="검색 닫기">×</button></div>
+    <div class="search-field"><span data-icon="search"></span><input id="search-input" type="search" placeholder="통발, 첫 보상, 서버 접속…" autocomplete="off" aria-label="공략 검색"></div>
+    <p id="search-status" class="search-status" aria-live="polite"></p><div id="search-results"></div>
+    <div class="search-foot">↑ ↓ 결과 이동 <span>Enter 열기 · Esc 닫기</span></div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

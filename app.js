@@ -23,12 +23,16 @@
   };
   const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name] || paths.book}"/></svg>`;
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
-  const save = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
+  const temporaryValues = new Map();
+  const read = (key, fallback) => { if (temporaryValues.has(key)) return temporaryValues.get(key); try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
+  const save = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); temporaryValues.delete(key); return true; } catch { temporaryValues.set(key, value); return false; } };
   let season = read('sunlit-wiki-season', 'normal');
   if (!['normal','pokemon'].includes(season)) season = 'normal';
   let searchIndex = -1, searchItems = [], toastTimer;
   const catalog = data.catalog || [];
+  const catalogById = new Map(catalog.map(item => [item.id, item]));
+  const normalize = text => text.toLocaleLowerCase().replace(/\s+/g,'');
+  const catalogSearchText = new Map(catalog.map(item => [item.id, normalize([item.name,item.id,item.tagline,item.category,...item.keywords,...item.obtain,...item.uses].join(' '))]));
   const stageNames = {early:'초반부터', mid:'재료를 모아서', late:'나중 목표'};
   const catalogFilters = {query:'', category:'all', stage:'all', starred:false};
   let selectedRole = 'treasure';
@@ -41,31 +45,31 @@
     {id:'pokemon',name:'포켓몬이 궁금해',icon:'spark',line:'별도 시즌에서 첫 파트너와 마을 밖으로.',detail:'일반 마을은 남겨두고 포켓몬 시즌을 따로 시작해요. 포획 도구·회복·나무열매도 이 팩의 실제 조합과 퀘스트에 맞춰 알아볼 수 있어요.',guide:'pokemon-season',terms:['몬스터볼','슈퍼볼','회복','열매','규토리'],early:'포켓몬 시즌의 첫 튜토리얼과 파트너 만나기',season:'pokemon'},
   ];
   const itemHref = item => '#item/' + encodeURIComponent(item.id);
-  const findItem = id => catalog.find(item => item.id === id);
+  const findItem = id => catalogById.get(id);
   const pictureLabel = item => item.iconKind==='model_texture'?'완성 블록 모습이 아닌 원본 표면 그림':item.iconKind==='tinted_item_texture'?'게임에서 색을 입히기 전의 원본 그림':'원본 아이템 그림';
-  const wishes = () => { const value = read('sunlit-wiki-wishes', []); return Array.isArray(value) ? value.filter(id => catalog.some(item => item.id === id)) : []; };
+  const wishes = () => { const value = read('sunlit-wiki-wishes', []); return Array.isArray(value) ? [...new Set(value.filter(id => catalogById.has(id)))] : []; };
   const plainLine = value => typeof value === 'string' ? value : value?.label && typeof value.percent==='number' ? value.label+' '+Number(value.percent.toFixed(2))+'%'+(value.scope?' · '+value.scope:'') : value?.text || value?.note || value?.description || Object.entries(value || {}).map(([key,val])=>key+': '+val).join(' · ');
   const lines = values => (Array.isArray(values) ? values : values ? [values] : []).map(value=>`<li>${escape(plainLine(value))}</li>`).join('');
   function sprite(item, large = false) { return `<span class="item-picture ${large ? 'large' : ''} ${item.iconKind === 'model_texture' ? 'surface-picture' : ''}"><img src="${escape(item.icon)}" alt="${escape(item.name)}${item.iconKind === 'model_texture' ? '의 원본 표면 그림' : ''}" loading="lazy" width="${item.iconWidth}" height="${item.iconHeight}"></span>`; }
-  function itemCard(item) {
-    const starred = wishes().includes(item.id);
+  function itemCard(item, saved) {
+    const starred = saved.has(item.id);
     return `<article class="item-card"><button class="wish-button ${starred ? 'selected' : ''}" data-wish="${escape(item.id)}" aria-pressed="${starred}" aria-label="${escape(item.name)} 관심 ${starred ? '해제' : '추가'}">${icon('star')}</button><a class="item-open" href="${itemHref(item)}">${sprite(item)}<div class="item-labels"><span class="stage-${item.stage}">${stageNames[item.stage]}</span>${item.season === 'pokemon' ? '<span class="pokemon-badge">포켓몬</span>' : ''}${item.iconKind === 'model_texture' ? '<span>표면 그림</span>' : ''}</div><h3>${escape(item.name)}</h3><p>${escape(item.tagline)}</p><span class="item-more">얻는 법과 쓰는 곳 ${icon('arrow')}</span></a></article>`;
   }
   function bindWishes(root = $('#main')) {
     root.querySelectorAll('[data-wish]').forEach(button => button.addEventListener('click', () => {
       const id = button.dataset.wish, current = wishes(), isSaved = current.includes(id);
-      save('sunlit-wiki-wishes', isSaved ? current.filter(value=>value!==id) : [...current,id]);
+      const persisted = save('sunlit-wiki-wishes', isSaved ? current.filter(value=>value!==id) : [...current,id]);
       if (location.hash === '#items') { catalogResults(); const next = [...root.querySelectorAll('[data-wish]')].find(el=>el.dataset.wish===id); (next || $('#only-wishes'))?.focus(); }
       else { root.querySelectorAll('[data-wish]').forEach(el => { if(el.dataset.wish === id){el.classList.toggle('selected',!isSaved);el.setAttribute('aria-pressed',String(!isSaved));el.setAttribute('aria-label',findItem(id).name+' 관심 '+(!isSaved?'해제':'추가'));} }); }
-      toast(isSaved ? '관심 목록에서 뺐어요.' : '이 브라우저의 관심 목록에 담았어요.');
+      toast(persisted ? (isSaved ? '관심 목록에서 뺐어요.' : '이 브라우저의 관심 목록에 담았어요.') : '브라우저 저장이 막혀 이 창에서만 기억해요. 새로고침하거나 닫으면 사라져요.');
     }));
   }
   function visibleItems() { return catalog.filter(item=>season==='pokemon' || item.season==='all'); }
   function catalogResults() {
-    const query = normalize(catalogFilters.query), saved = wishes();
-    const filtered = visibleItems().filter(item => (catalogFilters.category==='all'||item.category===catalogFilters.category) && (catalogFilters.stage==='all'||item.stage===catalogFilters.stage) && (!catalogFilters.starred||saved.includes(item.id)) && (!query||normalize([item.name,item.id,item.tagline,item.category,...item.keywords,...item.obtain,...item.uses].join(' ')).includes(query)));
+    const query = normalize(catalogFilters.query), saved = new Set(wishes());
+    const filtered = visibleItems().filter(item => (catalogFilters.category==='all'||item.category===catalogFilters.category) && (catalogFilters.stage==='all'||item.stage===catalogFilters.stage) && (!catalogFilters.starred||saved.has(item.id)) && (!query||catalogSearchText.get(item.id).includes(query)));
     $('#item-results-count').textContent = `${filtered.length}개 / 이 시즌에서 소개하는 ${visibleItems().length}개`;
-    $('#item-grid').innerHTML = filtered.length ? filtered.map(itemCard).join('') : '<div class="catalog-empty"><h3>이 조건에 맞는 아이템이 없어요.</h3><p>검색어를 짧게 바꾸거나 다른 분류를 골라보세요.</p><button class="button" id="clear-item-filters">조건 모두 지우기</button></div>';
+    $('#item-grid').innerHTML = filtered.length ? filtered.map(item=>itemCard(item,saved)).join('') : '<div class="catalog-empty"><h3>이 조건에 맞는 아이템이 없어요.</h3><p>검색어를 짧게 바꾸거나 다른 분류를 골라보세요.</p><button class="button" id="clear-item-filters">조건 모두 지우기</button></div>';
     $('#clear-item-filters')?.addEventListener('click',()=>{Object.assign(catalogFilters,{query:'',category:'all',stage:'all',starred:false});catalogPage();});
     bindWishes($('#item-grid'));
   }
@@ -137,18 +141,19 @@
   }
   function checklist() {
     const completed = read('sunlit-wiki-check-' + season, []);
-    const checked = Array.isArray(completed) ? completed : [];
+    const checked = Array.isArray(completed) ? [...new Set(completed.filter(i => Number.isInteger(i) && i >= 0 && i < steps.length))] : [];
     return `<div class="checklist">${steps.map((step, i) => `<label><input type="checkbox" data-step="${i}" ${checked.includes(i) ? 'checked' : ''}><span>${step[0]}<small>${step[1]}</small></span></label>`).join('')}</div><div class="check-progress"><span id="check-count">${checked.filter(i => Number.isInteger(i) && i >= 0 && i < steps.length).length} / 4 준비했어요</span><button class="text-button" id="reset-checklist">처음부터 체크하기</button></div>`;
   }
   function home() {
     const pokemon = season === 'pokemon';
+    const saved = new Set(wishes());
     const featured = ['friend-install', 'traps-and-treasure', 'automation', 'pokemon-season', 'host-setup', 'troubleshooting'];
     const featuredItems = ['sunlitfriends:sealed_find','sunlitfriends:treasure_fragment','society:sunlit_pearl',pokemon?'cobblemon:poke_ball':'society:furniture_box'].map(findItem).filter(Boolean);
     $('#main').innerHTML = `<div class="home-heading"><div><div class="eyebrow">OUR LITTLE VALLEY</div><h1>반가워요, 오늘도 선릿밸리.</h1></div><p>모르는 건 여기서, 재밌는 건 친구들과.</p></div>
       <section class="hero" aria-labelledby="hero-title"><img class="hero-image" src="assets/${pokemon ? 'pokemon' : 'valley'}.png" alt="노을 아래 작은 농장과 강이 있는 마을 일러스트" width="1536" height="1024"><div class="hero-content"><span class="hero-tag">${pokemon ? '포켓몬과 함께하는 별도 시즌' : '농사 · 보물 · 탐험 · 우리 마을'}</span><h2 id="hero-title">${pokemon ? '오늘은 파트너와<br>어디로 걸어볼까요?' : '내가 좋아하는 일로<br>우리 마을이 자라요.'}</h2><p>${pokemon ? '첫 파트너를 만나고, 나무열매를 심고.<br>익숙한 마을에 새로운 친구가 생겨요.' : '누군가는 보물을, 누군가는 멋진 집을.<br>취향이 다른 친구들도, 각자의 재미로 함께.'}</p><div class="hero-buttons"><a class="button" href="#play">우리, 뭐 하고 놀까요? ${icon('arrow')}</a><a class="hero-secondary" href="#items">아이템 도감 둘러보기</a></div></div><span class="hero-credit">분위기를 담은 표지 그림이에요</span></section>
       <div class="quickbar"><span>${icon('check')} 처음이라도 괜찮아요</span><span>${icon('book')}<a href="#guide/game-menu">F8로 여는 게임 메뉴</a></span><a href="${data.release}" target="_blank" rel="noopener noreferrer">최신 설치기 받기 ↗</a></div>
       <a class="discovery-banner" href="#play"><span class="discovery-icon">${icon('spark')}</span><div><strong>농사하는 친구, 탐험하는 친구, 꾸미는 친구.</strong><p>각자 좋아하는 일과, 같이 기다릴 보상을 골라봐요.</p></div><span>여섯 가지 재미 보기 ${icon('arrow')}</span></a>
-      ${featuredItems.length?`<div class="section-title"><h2>‘이거 얻고 싶다!’부터 시작해요</h2><a href="#items">${catalog.length}개 아이템 도감 →</a></div><div class="item-grid featured-item-grid">${featuredItems.map(itemCard).join('')}</div>`:''}
+      ${featuredItems.length?`<div class="section-title"><h2>‘이거 얻고 싶다!’부터 시작해요</h2><a href="#items">${catalog.length}개 아이템 도감 →</a></div><div class="item-grid featured-item-grid">${featuredItems.map(item=>itemCard(item,saved)).join('')}</div>`:''}
       <div class="notice">${icon('book')}<span>위 도감은 추천 아이템을 골라 소개해요. 게임에는 <a href="#guide/brewing-and-cooking">맥주·와인 양조, 차·커피와 다양한 음식</a>도 더 있어요.</span></div>
       <div class="section-title"><h2>궁금한 곳부터 둘러봐요</h2><p>정해진 순서는 없어요. 하고 싶은 것부터.</p></div>
       <div class="guide-grid">${featured.map(id => { const g = data.guides.find(g => g.id === id); return `<a href="#guide/${g.id}" class="guide-card"><span class="card-icon">${icon(g.icon)}</span><span class="card-arrow">${icon('arrow')}</span><h3>${escape(g.title)}</h3><p>${escape(g.description)}</p></a>`; }).join('')}</div>
@@ -157,10 +162,10 @@
     $('#crumb').textContent = '첫 화면';
     document.title = '우리의 선릿밸리 · 같이 보는 공략';
     bindWishes();
-    $('#reset-checklist').addEventListener('click', () => { save('sunlit-wiki-check-' + season, []); home(); toast('첫날 체크리스트를 비웠어요.'); });
+    $('#reset-checklist').addEventListener('click', () => { const persisted = save('sunlit-wiki-check-' + season, []); home(); toast(persisted ? '첫날 체크리스트를 비웠어요.' : '이 창에서 체크를 비웠어요. 브라우저 저장은 허용되지 않았어요.'); });
     $('#main').querySelectorAll('[data-step]').forEach(input => input.addEventListener('change', () => {
       const checked = [...$('#main').querySelectorAll('[data-step]:checked')].map(el => Number(el.dataset.step));
-      save('sunlit-wiki-check-' + season, checked);
+      if (!save('sunlit-wiki-check-' + season, checked)) toast('이 창에서만 체크를 기억해요. 새로고침하거나 닫으면 사라져요.');
       $('#check-count').textContent = `${checked.length} / 4 준비했어요`;
     }));
   }
@@ -190,13 +195,14 @@
     closeNavigation();
     window.scrollTo(0,0);
   }
-  const normalize = text => text.toLocaleLowerCase().replace(/\s+/g,'');
+  // The reviewed guide and item data stay fixed for this page visit.
+  const searchIndexEntries = [
+    ...data.guides.map(g => ({href:'#guide/'+g.id,group:g.group,title:g.title,description:g.description,season:g.season,item:false,normalizedTitle:normalize(g.title),keywords:normalize(g.keywords.join(' ')),body:normalize(g.text)})),
+    ...catalog.map(item => ({href:itemHref(item),group:'아이템 도감 · '+item.category,title:item.name,description:item.tagline,season:item.season,item:true,normalizedTitle:normalize(item.name),keywords:normalize([item.id,...item.keywords].join(' ')),body:normalize([item.category,item.tagline,item.description,...item.obtain].join(' '))}))
+  ];
   function search() {
     const query = normalize($('#search-input').value.trim());
-    const results = [...data.guides.map(g => {
-      const title = normalize(g.title), keywords = normalize(g.keywords.join(' ')), body = normalize(g.text);
-      return {href:'#guide/'+g.id,group:g.group,title:g.title,description:g.description,season:g.season,score: !query ? 1 : title.includes(query) ? 4 : keywords.includes(query) ? 3 : body.includes(query) ? 1 : 0};
-    }),...catalog.map(item=>{const title=normalize(item.name),keyword=normalize([item.id,...item.keywords].join(' ')),body=normalize([item.category,item.tagline,item.description,...item.obtain].join(' '));return {href:itemHref(item),group:'아이템 도감 · '+item.category,title:item.name,description:item.tagline,season:item.season,score:!query?0:title===query?7:title.includes(query)?5:keyword.includes(query)?3:body.includes(query)?1:0};})].filter(item => item.score).sort((a,b) => b.score - a.score);
+    const results = searchIndexEntries.map(entry => ({...entry,score: !query ? (entry.item ? 0 : 1) : entry.item && entry.normalizedTitle===query ? 7 : entry.normalizedTitle.includes(query) ? (entry.item ? 5 : 4) : entry.keywords.includes(query) ? 3 : entry.body.includes(query) ? 1 : 0})).filter(item => item.score).sort((a,b) => b.score - a.score);
     $('#search-status').textContent = query ? `${results.length}개의 공략·아이템을 찾았어요` : '자주 찾는 공략 · 아이템 이름도 검색할 수 있어요';
     $('#search-results').innerHTML = results.length ? results.map(g => `<a class="search-result" href="${g.href}"><small>${escape(g.group)}${g.season === 'pokemon' ? ' · 포켓몬' : ''}</small><strong>${escape(g.title)}</strong><p>${escape(g.description)}</p></a>`).join('') : '<p class="empty-search">맞는 공략이나 아이템이 아직 없어요.<br>‘접속’, ‘통발’, ‘몬스터볼’처럼 짧게 검색해보세요.</p>';
     searchItems = [...$('#search-results').querySelectorAll('a')]; searchIndex = -1;

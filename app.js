@@ -42,8 +42,9 @@
     } catch { toast('자동 복사를 할 수 없어요. 주소를 직접 복사해주세요.'); }
   }
   function navigation() {
+    const labels = {'first-30-minutes':'처음 30분','friend-install':'친구용 설치','game-menu':'F8 게임 메뉴','host-setup':'서버 열기','traps-and-treasure':'통발과 보물','automation':'농사와 자동화','pokemon-season':'포켓몬 시즌','troubleshooting':'문제 해결','verification':'검증과 알려진 제한','development':'개발 안내'};
     const groups = [...new Set(data.guides.map(g => g.group))];
-    $('#navigation').innerHTML = groups.map(group => `<div class="nav-group">${escape(group)}</div>${data.guides.filter(g => g.group === group).map(g => `<a class="nav-link" href="#guide/${g.id}">${icon(g.icon)}${escape(g.id === 'first-30-minutes' ? '처음 30분' : g.id === 'friend-install' ? '친구용 설치' : g.id === 'host-setup' ? '서버 열기' : g.id === 'traps-and-treasure' ? '통발과 보물' : g.id === 'automation' ? '농사와 자동화' : g.id === 'pokemon-season' ? '포켓몬 시즌' : g.id === 'troubleshooting' ? '문제 해결' : g.id === 'verification' ? '검증과 알려진 제한' : '개발 안내')}</a>`).join('')}`).join('');
+    $('#navigation').innerHTML = groups.map(group => `<div class="nav-group">${escape(group)}</div>${data.guides.filter(g => g.group === group).map(g => `<a class="nav-link" href="#guide/${g.id}">${icon(g.icon)}${escape(labels[g.id] || g.title)}</a>`).join('')}`).join('');
   }
   function checklist() {
     const completed = read('sunlit-wiki-check-' + season, []);
@@ -55,7 +56,7 @@
     const featured = ['friend-install', 'traps-and-treasure', 'automation', 'pokemon-season', 'host-setup', 'troubleshooting'];
     $('#main').innerHTML = `<div class="home-heading"><div><div class="eyebrow">OUR LITTLE VALLEY</div><h1>반가워요, 오늘도 선릿밸리.</h1></div><p>모르는 건 여기서, 재밌는 건 친구들과.</p></div>
       <section class="hero" aria-labelledby="hero-title"><img class="hero-image" src="assets/${pokemon ? 'pokemon' : 'valley'}.png" alt="노을 아래 작은 농장과 강이 있는 마을 일러스트" width="1536" height="1024"><div class="hero-content"><span class="hero-tag">${pokemon ? '포켓몬과 함께하는 별도 시즌' : '우리 여섯 명의 작은 마을'}</span><h2 id="hero-title">${pokemon ? '오늘은 파트너와<br>어디로 걸어볼까요?' : '오늘은 무엇을<br>해볼까요?'}</h2><p>${pokemon ? '첫 파트너를 만나고, 나무열매를 심고.<br>익숙한 마을에 새로운 친구가 생겨요.' : '작은 밭을 가꾸고, 통발을 걷고, 보물을 열고.<br>우리 속도로 하나씩 시작해봐요.'}</p><a class="button" href="#guide/${pokemon ? 'pokemon-season' : 'first-30-minutes'}">${pokemon ? '포켓몬 시즌 시작하기' : '처음 30분, 같이 시작하기'}${icon('arrow')}</a></div><span class="hero-credit">분위기를 담은 표지 그림이에요</span></section>
-      <div class="quickbar"><span>${icon('check')} 처음이라도 괜찮아요</span><span>${icon('book')} 게임 안에서도 한국어 안내</span><a href="${data.release}" target="_blank" rel="noopener noreferrer">최신 설치기 받기 ↗</a></div>
+      <div class="quickbar"><span>${icon('check')} 처음이라도 괜찮아요</span><span>${icon('book')}<a href="#guide/game-menu">F8로 여는 게임 메뉴</a></span><a href="${data.release}" target="_blank" rel="noopener noreferrer">최신 설치기 받기 ↗</a></div>
       <div class="section-title"><h2>궁금한 곳부터 둘러봐요</h2><p>정해진 순서는 없어요. 하고 싶은 것부터.</p></div>
       <div class="guide-grid">${featured.map(id => { const g = data.guides.find(g => g.id === id); return `<a href="#guide/${g.id}" class="guide-card"><span class="card-icon">${icon(g.icon)}</span><span class="card-arrow">${icon('arrow')}</span><h3>${escape(g.title)}</h3><p>${escape(g.description)}</p></a>`; }).join('')}</div>
       <div class="bottom-grid"><section class="panel"><h2>우리의 첫날 체크리스트</h2><p>이 브라우저에만 저장해요. 게임 진행과는 별개예요.</p>${checklist()}</section><section class="panel treasure-panel"><img class="treasure-art" src="assets/treasure.png" alt="작은 보물 꾸러미" width="128" height="128"><div class="eyebrow">A LITTLE SURPRISE</div><h2>통발을 기다리는 동안,<br>다른 재미를 찾아요.</h2><p class="treasure-description">반짝이는 조각 8개와 종이 1개.<br>작은 보물 꾸러미에 무엇이 들었을까요?</p><a href="#guide/traps-and-treasure">보상과 확률 알아보기 ${icon('arrow')}</a><div class="treasure-caption">획득 확률과 미끼별 차이도 공략에서 확인해요.</div></section></div>
@@ -123,6 +124,7 @@
   $('#backdrop').addEventListener('click', closeNavigation);
   document.querySelectorAll('[data-season]').forEach(button => button.addEventListener('click', () => { season = button.dataset.season; save('sunlit-wiki-season', season); render(); }));
   window.addEventListener('hashchange', render);
+  $('.skip').addEventListener('click', event => { event.preventDefault(); $('#main').focus(); $('#main').scrollIntoView({block:'start'}); });
   $('#version').textContent = `v${data.version} · ${data.updated}`;
   decorate(); navigation(); render();
 })();

@@ -137,9 +137,15 @@
   async function copy(text) {
     try {
       if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
-      else { const el = document.createElement('textarea'); el.value = text; el.setAttribute('aria-label', '복사할 내용'); document.body.append(el); el.select(); const ok = document.execCommand('copy'); el.remove(); if (!ok) throw Error('Copy unavailable'); }
+      else {
+        const previousFocus = document.activeElement;
+        const el = document.createElement('textarea');
+        el.value = text; el.setAttribute('aria-label', '복사할 내용'); document.body.append(el);
+        try { el.select(); if (!document.execCommand('copy')) throw Error('Copy unavailable'); }
+        finally { el.remove(); previousFocus?.focus({preventScroll:true}); }
+      }
       toast('복사했어요. 필요한 곳에 붙여 넣으세요.');
-    } catch { toast('자동 복사를 할 수 없어요. 주소를 직접 복사해주세요.'); }
+    } catch { toast('자동 복사를 할 수 없어요. 필요한 내용을 직접 복사해주세요.'); }
   }
   function navigation() {
     const labels = {'play-together':'친구와 할 일 자세히','collection-goals':'다음 수집 목표','first-30-minutes':'처음 30분','friend-install':'친구용 설치','game-menu':'F8 게임 메뉴','host-setup':'서버 열기','traps-and-treasure':'통발과 보물','automation':'농사와 자동화','pokemon-season':'포켓몬 시즌','troubleshooting':'문제 해결','verification':'검증과 알려진 제한','development':'개발 안내'};

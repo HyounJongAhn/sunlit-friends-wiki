@@ -47,7 +47,7 @@
     {id:'treasure',name:'보물 여는 게 좋아',icon:'spark',line:'통발에서 모은 조각으로, 다음 꾸러미를 기대해요.',detail:'첫 환영 보상에 작은 보물 꾸러미가 있어요. 통발을 챙기면서 조각을 모으고, 가구 상자·티켓·캡슐·진주를 노려봐요.',guide:'traps-and-treasure',terms:['보물','조각','꾸러미','진주','캡슐'],early:'첫 꾸러미를 열고, 함께 결과 구경하기'},
     {id:'farm',name:'작은 농장은 좋아',icon:'leaf',line:'첫 밭에서 물주기를 줄이고, 나중에는 기계까지.',detail:'밀 8개 목표의 철 스프링클러부터 써봐요. 움직이는 자동 수확 장치는 팩 전용 재료와 진행이 필요한 나중 목표예요.',guide:'automation',terms:['스프링클러','물레','수확기','청사진','작물'],early:'작은 밭 하나와 첫 철 스프링클러'},
     {id:'explore',name:'밖으로 나가고 싶어',icon:'sun',line:'새 재료를 찾아 돌아오면, 마을에서 쓸 곳이 생겨요.',detail:'음식과 방패를 챙겨 가까운 곳부터 같이 걸어요. 찾은 광물과 재료는 장비, 마을의 가공 장치와 나중 자동화에도 쓰여요.',guide:'play-together',terms:['광물','파편','주화','방패','배낭','정동석'],early:'가까운 탐험에서 공용 상자에 가져올 물건 찾기'},
-    {id:'build',name:'마을 꾸미고 싶어',icon:'home',line:'모아 온 가구로 식당, 창고, 친구 집을 꾸며요.',detail:'첫날은 공용 상자 하나여도 좋아요. 보물에서 가구 상자가 나오면 어디에 둘지 같이 골라봐요. 완성된 마을 맵은 제공하지 않고 직접 만들어가요.',guide:'collection-goals',terms:['가구','상자','인형','장식','티켓'],early:'친구들이 돌아올 작은 공용 공간 만들기'},
+    {id:'build',name:'마을 꾸미고 싶어',icon:'home',line:'모아 온 가구로 식당, 창고, 친구 집을 꾸며요.',detail:'보물에서 가구 상자가 나오면 어디에 둘지 같이 골라봐요. 운영자가 기본 마을을 준비하면 빈 집터에 내 집을 짓고, 공용 시설은 친구들과 늘려요.',guide:'collection-goals',terms:['가구','상자','인형','장식','티켓'],early:'친구들이 돌아올 작은 공용 공간 만들기'},
     {id:'fish',name:'기다리며 모을래',icon:'fish',line:'통발에 미끼를 넣고, 그동안 다른 일을 해요.',detail:'직접 낚시만 반복하지 않아도 물고기를 모을 수 있어요. 물, 미끼, 빈칸을 확인하고 가까운 곳에서 밭이나 집을 돌봐요.',guide:'traps-and-treasure',terms:['통발','미끼','물고기','대구','연어'],early:'첫 통발에 미끼를 넣고 다른 일 하나 해보기'},
     {id:'pokemon',name:'포켓몬이 궁금해',icon:'spark',line:'별도 시즌에서 첫 파트너와 마을 밖으로.',detail:'일반 마을은 남겨두고 포켓몬 시즌을 따로 시작해요. 포획 도구·회복·나무열매도 이 팩의 실제 조합과 퀘스트에 맞춰 알아볼 수 있어요.',guide:'pokemon-season',terms:['몬스터볼','슈퍼볼','회복','열매','규토리'],early:'포켓몬 시즌의 첫 튜토리얼과 파트너 만나기',season:'pokemon'},
   ];
@@ -160,12 +160,13 @@
   function home() {
     const pokemon = season === 'pokemon';
     const saved = new Set(wishes());
-    const featured = ['friend-install', 'traps-and-treasure', 'automation', 'pokemon-season', 'host-setup', 'troubleshooting'];
+    const featured = ['friend-install', 'town', 'traps-and-treasure', 'pokemon-season', 'host-setup', 'troubleshooting'];
     const featuredItems = ['sunlitfriends:sealed_find','sunlitfriends:treasure_fragment','society:sunlit_pearl',pokemon?'cobblemon:poke_ball':'society:furniture_box'].map(findItem).filter(Boolean);
     $('#main').innerHTML = `<div class="home-heading"><div><div class="eyebrow">OUR LITTLE VALLEY</div><h1>반가워요, 오늘도 선릿밸리.</h1></div><p>모르는 건 여기서, 재밌는 건 친구들과.</p></div>
       <section class="hero" aria-labelledby="hero-title"><img class="hero-image" src="assets/${pokemon ? 'pokemon' : 'valley'}.png" alt="노을 아래 작은 농장과 강이 있는 마을 일러스트" width="1536" height="1024"><div class="hero-content"><span class="hero-tag">${pokemon ? '포켓몬과 함께하는 별도 시즌' : '농사 · 보물 · 탐험 · 우리 마을'}</span><h2 id="hero-title">${pokemon ? '오늘은 파트너와<br>어디로 걸어볼까요?' : '내가 좋아하는 일로<br>우리 마을이 자라요.'}</h2><p>${pokemon ? '첫 파트너를 만나고, 나무열매를 심고.<br>익숙한 마을에 새로운 친구가 생겨요.' : '누군가는 보물을, 누군가는 멋진 집을.<br>취향이 다른 친구들도, 각자의 재미로 함께.'}</p><div class="hero-buttons"><a class="button" href="#play">우리, 뭐 하고 놀까요? ${icon('arrow')}</a><a class="hero-secondary" href="#items">아이템 도감 둘러보기</a></div></div><span class="hero-credit">분위기를 담은 표지 그림이에요</span></section>
       <div class="quickbar"><span>${icon('check')} 처음이라도 괜찮아요</span><span>${icon('book')}<a href="#guide/game-menu">F8로 여는 게임 메뉴</a></span><a href="${data.release}" target="_blank" rel="noopener noreferrer">최신 설치기 받기 ↗</a></div>
       <a class="discovery-banner" href="#play"><span class="discovery-icon">${icon('spark')}</span><div><strong>농사하는 친구, 탐험하는 친구, 꾸미는 친구.</strong><p>각자 좋아하는 일과, 같이 기다릴 보상을 골라봐요.</p></div><span>여섯 가지 재미 보기 ${icon('arrow')}</span></a>
+      <a class="town-spotlight" href="#guide/town"><img src="assets/town/preview-base-isometric.png" alt="벚꽃과 수로를 가운데 두고 여섯 빈 집터가 놓인 실제 블록 설계도" loading="lazy"><div><span class="eyebrow">여섯 친구가 채워갈 곳</span><h2>집은 각자의 취향으로,<br>마을은 함께 키워요.</h2><p>처음에는 벚꽃길 옆 빈 집터에서 시작해요. 재료를 모으면 작업장, 시장 거리, 물가 정원이 하나씩 생겨요.</p><strong>집터와 마을 성장 둘러보기 →</strong><small>운영자가 부지를 골라 설치해요. 그림은 실제 구조의 설계 미리보기예요.</small></div></a>
       ${featuredItems.length?`<div class="section-title"><h2>‘이거 얻고 싶다!’부터 시작해요</h2><a href="#items">${catalog.length}개 아이템 도감 →</a></div><div class="item-grid featured-item-grid">${featuredItems.map(item=>itemCard(item,saved)).join('')}</div>`:''}
       <div class="notice">${icon('book')}<span>위 도감은 추천 아이템을 골라 소개해요. 게임에는 <a href="#guide/brewing-and-cooking">맥주·와인 양조, 차·커피와 다양한 음식</a>도 더 있어요.</span></div>
       <div class="section-title"><h2>궁금한 곳부터 둘러봐요</h2><p>정해진 순서는 없어요. 하고 싶은 것부터.</p></div>
@@ -249,6 +250,7 @@
     }
   });
   $('#mobile-menu').addEventListener('click', () => { const opened = $('#sidebar').classList.toggle('open'); $('#backdrop').hidden = !opened; $('#mobile-menu').setAttribute('aria-expanded', String(opened)); });
+  $('#navigation').addEventListener('click', event => { if (event.target.closest('a')) closeNavigation(); });
   $('#backdrop').addEventListener('click', closeNavigation);
   document.querySelectorAll('[data-season]').forEach(button => button.addEventListener('click', () => { season = button.dataset.season; save('sunlit-wiki-season', season); render(); }));
   window.addEventListener('hashchange', render);

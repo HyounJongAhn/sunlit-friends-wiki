@@ -291,4 +291,5 @@ select:focus-visible { outline:3px solid #bd8a3f; outline-offset:3px; }
 .eyebrow { color:#7c745e; }
 .item-card p { font-size:14px; }
 .item-more { font-size:13px; }
+.sidebar-note, .sidebar-note p, .repository { font-size:12px; }
 @media(max-width:680px) { .item-card p { font-size:14px; } .item-more { font-size:12px; } }

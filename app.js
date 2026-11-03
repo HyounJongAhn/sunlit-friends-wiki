@@ -167,7 +167,7 @@
     $('#main').innerHTML = `<header class="article-header"><div class="eyebrow">${escape(guide.group)}${guide.season === 'pokemon' ? ' · 포켓몬 시즌' : ''}</div><h1>${escape(guide.title)}</h1><p>${escape(guide.description)}</p><div class="article-tools"><button id="copy-article">이 공략 주소 복사</button><a href="${data.repository}/blob/main/docs/${guide.id}.md" target="_blank" rel="noopener noreferrer">GitHub 원문 ↗</a>${guide.id === 'first-30-minutes' ? '<button id="copy-command">/sunlit 명령어 복사</button>' : ''}</div></header><div class="article-layout"><article class="prose">${guide.html}<div class="article-end"><a href="#home">← 공략 첫 화면</a><a href="#guide/troubleshooting">막힌 곳이 있나요? →</a></div></article><aside class="toc" aria-label="이 공략의 목차"><strong>이 페이지에서</strong>${guide.headings.map(h => `<button data-heading="${h.id}">${escape(h.title)}</button>`).join('')}</aside></div>`;
     $('#crumb').textContent = guide.title;
     document.title = guide.title + ' · 우리의 선릿밸리';
-    $('#copy-article').addEventListener('click', () => copy(location.href));
+    $('#copy-article').addEventListener('click', () => copy(data.publicWiki+'#guide/'+guide.id));
     $('#copy-command')?.addEventListener('click', () => copy('/sunlit'));
     $('#main').querySelectorAll('[data-heading]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.heading)?.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'})));
   }

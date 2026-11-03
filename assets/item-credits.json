@@ -454,6 +454,145 @@
       "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
       "resource": "assets/cobblemon/textures/item/yellow_apricorn.png",
       "sha256": "0407c81bc83843212a20c0ce6d30db60d4a088043761a8b4a992f75dd06d3945"
+    },
+    {
+      "id": "sophisticatedbackpacks:backpack",
+      "name": "기본 가방",
+      "icon": "assets/items/sophisticatedbackpacks--backpack.png",
+      "kind": "model_texture",
+      "note": "원본 3D 모델의 일부 평면 재질이에요. 완성된 아이템 렌더가 아닙니다.",
+      "archive": "sophisticatedbackpacks-1.20.1-3.24.60.1982.jar",
+      "resource": "assets/sophisticatedbackpacks/textures/block/backpack_cloth.png",
+      "sha256": "c22e7f2645bd0fb49b16a10afbeb5deb8d32a9ac12fdaa8c72c2c8484115adf8"
+    },
+    {
+      "id": "sophisticatedbackpacks:upgrade_base",
+      "name": "업그레이드 기반",
+      "icon": "assets/items/sophisticatedbackpacks--upgrade_base.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "sophisticatedbackpacks-1.20.1-3.24.60.1982.jar",
+      "resource": "assets/sophisticatedbackpacks/textures/item/upgrade_base.png",
+      "sha256": "252b3f18fc09dfe6392b6c7536b7b466db821f0bcec2f90909810e4b21ccbb09"
+    },
+    {
+      "id": "sophisticatedbackpacks:pickup_upgrade",
+      "name": "줍기 업그레이드",
+      "icon": "assets/items/sophisticatedbackpacks--pickup_upgrade.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "sophisticatedbackpacks-1.20.1-3.24.60.1982.jar",
+      "resource": "assets/sophisticatedbackpacks/textures/item/pickup_upgrade.png",
+      "sha256": "9d1bc6a7a9e5f3a26cc479b69e39574ec22ceb82838922c704fe53c50ce4805e"
+    },
+    {
+      "id": "sophisticatedbackpacks:deposit_upgrade",
+      "name": "넣기 업그레이드",
+      "icon": "assets/items/sophisticatedbackpacks--deposit_upgrade.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "sophisticatedbackpacks-1.20.1-3.24.60.1982.jar",
+      "resource": "assets/sophisticatedbackpacks/textures/item/deposit_upgrade.png",
+      "sha256": "63daf2cad9d805f94df36c108c343c276cef74bc93be73681648f942fa726fc4"
+    },
+    {
+      "id": "sophisticatedbackpacks:crafting_upgrade",
+      "name": "제작 업그레이드",
+      "icon": "assets/items/sophisticatedbackpacks--crafting_upgrade.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "sophisticatedbackpacks-1.20.1-3.24.60.1982.jar",
+      "resource": "assets/sophisticatedbackpacks/textures/item/crafting_upgrade.png",
+      "sha256": "89106e58b771b349b45a87152df89fae2c4bdcde0bec481ccf74f57f27d02c62"
+    },
+    {
+      "id": "refinedstorage:controller",
+      "name": "창고 컨트롤러 · RS",
+      "icon": "assets/items/refinedstorage--controller.png",
+      "kind": "model_texture",
+      "note": "원본 3D 모델의 일부 평면 재질이에요. 완성된 아이템 렌더가 아닙니다.",
+      "archive": "refinedstorage-1.12.4.jar",
+      "resource": "assets/refinedstorage/textures/block/controller/on.png",
+      "sha256": "4d8fb9db2788ceb5787bd7c0cb83b2e4148d272e99dcf47bf792ed8870b07b06"
+    },
+    {
+      "id": "refinedstorage:crafting_grid",
+      "name": "제작 그리드 · RS",
+      "icon": "assets/items/refinedstorage--crafting_grid.png",
+      "kind": "model_texture",
+      "note": "원본 3D 모델의 일부 평면 재질이에요. 완성된 아이템 렌더가 아닙니다.",
+      "archive": "refinedstorage-1.12.4.jar",
+      "resource": "assets/refinedstorage/textures/block/crafting_grid/front.png",
+      "sha256": "5d87df3c2785c255341de8488cf9135f8999f95fee9c151dfd895b6c3b576bba"
+    },
+    {
+      "id": "refinedstorage:external_storage",
+      "name": "외부 저장소 연결기 · RS",
+      "icon": "assets/items/refinedstorage--external_storage.png",
+      "kind": "model_texture",
+      "note": "원본 3D 모델의 일부 평면 재질이에요. 완성된 아이템 렌더가 아닙니다.",
+      "archive": "refinedstorage-1.12.4.jar",
+      "resource": "assets/refinedstorage/textures/block/cable_part_border.png",
+      "sha256": "6710926da9faecb7d655d555683e062908b27de305afd988d273f93f395ea857"
+    },
+    {
+      "id": "functionalstorage:storage_controller",
+      "name": "서랍 컨트롤러",
+      "icon": "assets/items/functionalstorage--storage_controller.png",
+      "kind": "model_texture",
+      "note": "원본 3D 모델의 일부 평면 재질이에요. 완성된 아이템 렌더가 아닙니다.",
+      "archive": "functionalstorage-1.20.1-1.2.13.jar",
+      "resource": "assets/functionalstorage/textures/block/controller_front.png",
+      "sha256": "1f0c5a4ceb24e16c38fa642bd4c708e5eca042acfecbd4833485927dbe8b178c"
+    },
+    {
+      "id": "functionalstorage:linking_tool",
+      "name": "서랍 연결 도구",
+      "icon": "assets/items/functionalstorage--linking_tool.png",
+      "kind": "item_texture",
+      "note": "원본 연결 도구의 기본 레이어예요. 상태 표시는 게임에서 달라질 수 있어요.",
+      "archive": "functionalstorage-1.20.1-1.2.13.jar",
+      "resource": "assets/functionalstorage/textures/item/linking_tool_base.png",
+      "sha256": "072d58210472b08ef15271134e8b8c55942cc6f414dee156986359412b4314b5"
+    },
+    {
+      "id": "shippingbin:basic_shipping_bin",
+      "name": "기본 배송 상자",
+      "icon": "assets/items/shippingbin--basic_shipping_bin.png",
+      "kind": "model_texture",
+      "note": "상자 3D 모델의 옆면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "ShippingBin-forge-1.20.1-4.jar",
+      "resource": "assets/shippingbin/textures/block/shipping_bin_side.png",
+      "sha256": "5f8a0beff92923f9da4ff93a0ff6459828be473572f1d730656aeec98eb99f9d"
+    },
+    {
+      "id": "numismatics:crown",
+      "name": "금 코인",
+      "icon": "assets/items/numismatics--crown.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "CreateNumismatics-1.1.0+forge-mc1.20.1.jar",
+      "resource": "assets/numismatics/textures/item/coin/crown.png",
+      "sha256": "115b66a48f58a3c1ab9e7b8f758386a0be2485d528c2415543edd7354865e9c7"
+    },
+    {
+      "id": "numismatics:sun",
+      "name": "이리듐 코인",
+      "icon": "assets/items/numismatics--sun.png",
+      "kind": "item_texture",
+      "note": "기본 모드 그림 대신 팩이 교체한 원본 코인 그림이에요.",
+      "resource": "vendor/normal-client/overrides/kubejs/assets/numismatics/textures/item/coin/sun.png",
+      "sha256": "35459325cc27fcf2df8712ffc241926dd5775e5b630964061c8adcd44c36a745"
+    },
+    {
+      "id": "whimsy_deco:phone",
+      "name": "전화기",
+      "icon": "assets/items/whimsy_deco--phone.png",
+      "kind": "model_texture",
+      "note": "3D 전화기 모델의 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "whimsy_deco-1.2.jar",
+      "resource": "assets/whimsy_deco/textures/block/phone.png",
+      "sha256": "a71dbe5471dfe949c6efb6b6e23f6623d17509773d82ed285bfa939efb2509b3"
     }
   ]
 }

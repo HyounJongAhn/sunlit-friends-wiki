@@ -1,0 +1,459 @@
+{
+  "purpose": "Small original textures identify the documented items. This is an unofficial guide, not a mod distribution.",
+  "attribution": "Minecraft and each mod texture remain the work of their original creators. The source pack is by Chakyl. Custom Sunlit Friends treasure art was created for this project.",
+  "sources": [
+    "https://github.com/Chakyl/society-sunlit-valley",
+    "https://www.curseforge.com/minecraft/modpacks/society-sunlit-valley/files/8980840",
+    "https://www.curseforge.com/minecraft/modpacks/society-sunlit-cobblemon/files/8980872"
+  ],
+  "items": [
+    {
+      "id": "dew_drop_farmland_growth:iron_sprinkler",
+      "name": "철 스프링클러",
+      "icon": "assets/items/dew_drop_farmland_growth--iron_sprinkler.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "dew_drop_farmland_growth-9.0.jar",
+      "resource": "assets/dew_drop_farmland_growth/textures/block/iron_sprinkler.png",
+      "sha256": "7e655528ba5c9ed304cfd6b89119342770516f18bc1c10c9e297d18702a28e02"
+    },
+    {
+      "id": "dew_drop_farmland_growth:gold_sprinkler",
+      "name": "금 스프링클러",
+      "icon": "assets/items/dew_drop_farmland_growth--gold_sprinkler.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "dew_drop_farmland_growth-9.0.jar",
+      "resource": "assets/dew_drop_farmland_growth/textures/block/gold_sprinkler.png",
+      "sha256": "be00364985cd70056d0e8664ab96773df59b38f2a0891ace7fde862a2165c0dd"
+    },
+    {
+      "id": "society:kinetic_blueprint",
+      "name": "키네틱 청사진",
+      "icon": "assets/items/society--kinetic_blueprint.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/kinetic_blueprint.png",
+      "sha256": "80bc517e95884d0fe764e3f2d2c51ee56225686e76ade3837792ba88cd8562b5"
+    },
+    {
+      "id": "create:water_wheel",
+      "name": "물레바퀴",
+      "icon": "assets/items/create--water_wheel.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "create-1.20.1-6.0.8.jar",
+      "resource": "assets/create/textures/block/waterwheel_metal.png",
+      "sha256": "a055c31d000967f698c8ceb2c2a1f8cc1bf078ac7dea72b11af277964b2aa67b"
+    },
+    {
+      "id": "create:shaft",
+      "name": "축",
+      "icon": "assets/items/create--shaft.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "create-1.20.1-6.0.8.jar",
+      "resource": "assets/create/textures/block/axis.png",
+      "sha256": "0ae58aa6fcc369fee5a49270827bfa572631078f57163b8344f97ea5fcde2441"
+    },
+    {
+      "id": "create:belt_connector",
+      "name": "벨트",
+      "icon": "assets/items/create--belt_connector.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "create-1.20.1-6.0.8.jar",
+      "resource": "assets/create/textures/item/belt_connector.png",
+      "sha256": "c6ee941707f0da0602568821fc9aa3f53ffd751a56c655a50ee2772069680488"
+    },
+    {
+      "id": "create:mechanical_harvester",
+      "name": "수확기",
+      "icon": "assets/items/create--mechanical_harvester.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "create-1.20.1-6.0.8.jar",
+      "resource": "assets/create/textures/block/harvester.png",
+      "sha256": "76ff9cac02077f49bbe6d44a51c6779d7ffd9f7ae4c9676c43ba223f95eaafac"
+    },
+    {
+      "id": "create:portable_storage_interface",
+      "name": "아이템 인터페이스",
+      "icon": "assets/items/create--portable_storage_interface.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "create-1.20.1-6.0.8.jar",
+      "resource": "assets/create/textures/block/portable_storage_interface.png",
+      "sha256": "378e41cbd7c7a1b956223027a3c59b0b37c1511c8c7022b2c75025904c1450ab"
+    },
+    {
+      "id": "crabbersdelight:crab_trap",
+      "name": "게잡이 통발",
+      "icon": "assets/items/crabbersdelight--crab_trap.png",
+      "kind": "model_texture",
+      "note": "3D 블록 모델에 쓰는 원본 평면 재질이에요. 완성된 아이템 그림이 아닙니다.",
+      "archive": "CrabbersDelight-1.20.1-1.1.7d.jar",
+      "resource": "assets/crabbersdelight/textures/block/crab_trap_side.png",
+      "sha256": "47519237cdfc2f5fd8b5ed1127205a5b954970da126cb44f02fdf981e07b9fcc"
+    },
+    {
+      "id": "crabbersdelight:crab_trap_bait",
+      "name": "게잡이 통발 미끼",
+      "icon": "assets/items/crabbersdelight--crab_trap_bait.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/crab_trap_bait.png",
+      "sha256": "88ef86b2a7130afc0b07f46497adcc594c994df5ae0c2d50e4a6380f26580df0"
+    },
+    {
+      "id": "crabbersdelight:deluxe_crab_trap_bait",
+      "name": "디럭스 게잡이 통발 미끼",
+      "icon": "assets/items/crabbersdelight--deluxe_crab_trap_bait.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/deluxe_crab_trap_bait.png",
+      "sha256": "e1749a9fc0886084f44e61b07a407bbe8b9012f56767f671d81cdcd9dfbe1ff1"
+    },
+    {
+      "id": "crabbersdelight:mana_crab_trap_bait",
+      "name": "마나 게잡이 통발 미끼",
+      "icon": "assets/items/crabbersdelight--mana_crab_trap_bait.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/mana_crab_trap_bait.png",
+      "sha256": "e89c94844728763ab1eb0e1cc98ef1de5b1a1b9846d93f13cf180a935ab30543"
+    },
+    {
+      "id": "society:cod_bait",
+      "name": "대구 미끼",
+      "icon": "assets/items/society--cod_bait.png",
+      "kind": "tinted_item_texture",
+      "note": "어종별 색상을 덧입히는 공통 원본 텍스처예요. 이 PNG만 표시하면 게임 속 대구 미끼의 색과 다를 수 있어요.",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/fish_bait.png",
+      "sha256": "e05477ca0a13a1cf20c6f529e11cfb3d978fe2c4032703f2d08ea2a403882072"
+    },
+    {
+      "id": "crabbersdelight:crab",
+      "name": "게",
+      "icon": "assets/items/crabbersdelight--crab.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "CrabbersDelight-1.20.1-1.1.7d.jar",
+      "resource": "assets/crabbersdelight/textures/item/crab.png",
+      "sha256": "14b7d5e51d50136a25d1fbfa613620660b01044044d24f0e05a56f7864614a11"
+    },
+    {
+      "id": "sunlitfriends:treasure_fragment",
+      "name": "반짝이는 보물 조각",
+      "icon": "assets/items/sunlitfriends--treasure_fragment.png",
+      "kind": "item_texture",
+      "note": "",
+      "resource": "patches/common/kubejs/assets/sunlitfriends/textures/item/treasure_fragment.png",
+      "sha256": "1bb58dba6fb44ab34137f08ea27583273024c6b49e21153b9df00ec08ebde60b"
+    },
+    {
+      "id": "sunlitfriends:sealed_find",
+      "name": "작은 보물 꾸러미",
+      "icon": "assets/items/sunlitfriends--sealed_find.png",
+      "kind": "item_texture",
+      "note": "",
+      "resource": "patches/common/kubejs/assets/sunlitfriends/textures/item/sealed_find.png",
+      "sha256": "8896aeff5973b1d977a8b196f5862a1f82c25cb9b28b9a4bd3d6847bbf681aee"
+    },
+    {
+      "id": "society:furniture_box",
+      "name": "가구 상자",
+      "icon": "assets/items/society--furniture_box.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/furniture_box.png",
+      "sha256": "fb673fc0401d1476b0165e0fa975eb9b555d284d6eb7d75108469e470fcac012"
+    },
+    {
+      "id": "society:prize_ticket",
+      "name": "경품 티켓",
+      "icon": "assets/items/society--prize_ticket.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/prize_ticket.png",
+      "sha256": "1019d66f87f9decdc503258d2972f30e72a573a985dad8bdd1c60a152c53b433"
+    },
+    {
+      "id": "society:plushie_capsule",
+      "name": "인형 캡슐",
+      "icon": "assets/items/society--plushie_capsule.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/plushie_capsule.png",
+      "sha256": "15ffcfc968e0bad1b3c42a9b4f793d91c68ccce2f4c36752487740346154dd13"
+    },
+    {
+      "id": "society:sunlit_pearl",
+      "name": "선릿 진주",
+      "icon": "assets/items/society--sunlit_pearl.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/sunlit_pearl.png",
+      "sha256": "b042e66e5624afa4f9fa60faf1f6af27d38e56608c1c00d2910d960935b79db3"
+    },
+    {
+      "id": "society:geode",
+      "name": "정동석",
+      "icon": "assets/items/society--geode.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/geode/geode.png",
+      "sha256": "435906beb017a1b3c659b564974776e856000c54aa416b6154d512f10c96ecaa"
+    },
+    {
+      "id": "society:geode_buster",
+      "name": "정동석 파쇄망치",
+      "icon": "assets/items/society--geode_buster.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "society-1.22.jar",
+      "resource": "assets/society/textures/item/geode_buster.png",
+      "sha256": "5c327249059e7bda8cb09fa45fd94e56e870499d403b2038c21deaf277a5f099"
+    },
+    {
+      "id": "patchouli:guide_book",
+      "name": "우리의 선릿밸리",
+      "icon": "assets/items/patchouli--guide_book.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Patchouli-1.20.1-85-FORGE.jar",
+      "resource": "assets/patchouli/textures/item/book_green.png",
+      "sha256": "4fb8b466e120191288f83a36f06be4b94f63f35dede10493e6cef4c342230338"
+    },
+    {
+      "id": "paraglider:paraglider",
+      "name": "패러세일",
+      "icon": "assets/items/paraglider--paraglider.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Paraglider-forge-20.1.3.jar",
+      "resource": "assets/paraglider/textures/item/paraglider.png",
+      "sha256": "983f8397b766ab846d85119f30d354620485a4a9bf43bbf0708f72d83025e706"
+    },
+    {
+      "id": "paraglider:spirit_orb",
+      "name": "극복의 증표",
+      "icon": "assets/items/paraglider--spirit_orb.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Paraglider-forge-20.1.3.jar",
+      "resource": "assets/paraglider/textures/item/spirit_orb.png",
+      "sha256": "e7f3c1262ece4802cf9910b7764049212a60c3556a0578882c0b7388cea2c8b1"
+    },
+    {
+      "id": "waystones:warp_stone",
+      "name": "휴대용 전송석",
+      "icon": "assets/items/waystones--warp_stone.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "waystones-forge-1.20.1-14.1.17.jar",
+      "resource": "assets/waystones/textures/item/warp_stone.png",
+      "sha256": "ca0ffe22947489b05de794745cdcb41e88d375a11a0c44a9793595042429c8b1"
+    },
+    {
+      "id": "waystones:warp_scroll",
+      "name": "전송 주문서",
+      "icon": "assets/items/waystones--warp_scroll.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "waystones-forge-1.20.1-14.1.17.jar",
+      "resource": "assets/waystones/textures/item/warp_scroll.png",
+      "sha256": "5380df9689978bf5889950c30d1cc530e5e29fb0a238dcd114ea6bbe5b7082b6"
+    },
+    {
+      "id": "naturescompass:naturescompass",
+      "name": "자연의 나침반",
+      "icon": "assets/items/naturescompass--naturescompass.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "NaturesCompass-1.20.1-1.11.2-forge.jar",
+      "resource": "assets/naturescompass/textures/item/naturescompass_16.png",
+      "sha256": "c1649772e44a312bcf9b5ed6c286233e295b0e29ad8891bb8ba5ecaf6595ac63"
+    },
+    {
+      "id": "comforts:sleeping_bag_white",
+      "name": "하얀색 침낭",
+      "icon": "assets/items/comforts--sleeping_bag_white.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "comforts-forge-6.4.0+1.20.1.jar",
+      "resource": "assets/comforts/textures/item/sleeping_bag_white.png",
+      "sha256": "54ea816f9058b11a6383d7e4177873ee37a9886b1f416a939adecccbbc23db15"
+    },
+    {
+      "id": "cobblemon:poke_ball",
+      "name": "몬스터볼",
+      "icon": "assets/items/cobblemon--poke_ball.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/poke_balls/poke_ball.png",
+      "sha256": "b579aa616d9f95fa389a17745bc89c951e4ff00108bb59ec92d8de188230487c"
+    },
+    {
+      "id": "cobblemon:great_ball",
+      "name": "슈퍼볼",
+      "icon": "assets/items/cobblemon--great_ball.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/poke_balls/great_ball.png",
+      "sha256": "02c4e7ed8dcc72a7a8a8c2fe9289aca199772ce2bfbb3f499660a0f580ad1225"
+    },
+    {
+      "id": "cobblemon:ultra_ball",
+      "name": "하이퍼볼",
+      "icon": "assets/items/cobblemon--ultra_ball.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/poke_balls/ultra_ball.png",
+      "sha256": "0508873c53bdfdaacd8f8386b404a90fedafcd1af94719a7c18fe3937730bbcc"
+    },
+    {
+      "id": "cobblemon:quick_ball",
+      "name": "퀵볼",
+      "icon": "assets/items/cobblemon--quick_ball.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/poke_balls/quick_ball.png",
+      "sha256": "5002548b9de3508006acd3592df6412c422fa3355f0b72295a17793473b05df9"
+    },
+    {
+      "id": "cobblemon:dusk_ball",
+      "name": "다크볼",
+      "icon": "assets/items/cobblemon--dusk_ball.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/poke_balls/dusk_ball.png",
+      "sha256": "f940e84fe37ec933785627682bfda78ad245e2f263a70e95d3c55ac58c0b7b26"
+    },
+    {
+      "id": "cobblemon:potion",
+      "name": "상처약",
+      "icon": "assets/items/cobblemon--potion.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/medicine/potion.png",
+      "sha256": "0aa13a2e6138a9723cf5085f7695c1c1ac9bd27e1492dccbae35323c2ca6974e"
+    },
+    {
+      "id": "cobblemon:super_potion",
+      "name": "좋은상처약",
+      "icon": "assets/items/cobblemon--super_potion.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/medicine/super_potion.png",
+      "sha256": "f32e93a21c25f81bc301caf3ae6cea43575b42cf2668335a18b74acac5831ddb"
+    },
+    {
+      "id": "cobblemon:revive",
+      "name": "기력의조각",
+      "icon": "assets/items/cobblemon--revive.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/medicine/revive.png",
+      "sha256": "4f7b44b20756e1b3a1ec28487dbe3d91aac463b7bc7af839c5a46cdca6c5a41c"
+    },
+    {
+      "id": "cobblemon:healing_machine",
+      "name": "회복 머신",
+      "icon": "assets/items/cobblemon--healing_machine.png",
+      "kind": "model_texture",
+      "note": "블록 모델에 붙이는 실제 표면 그림입니다. 가방에 표시되는 완성 블록 아이콘과 모양이 달라요.",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/block/healing_machine.png",
+      "sha256": "b2aa27f961dfad2153ff934777550f286147317459943e1533d16b08b0ea5fc0"
+    },
+    {
+      "id": "cobblemon:pc",
+      "name": "PC",
+      "icon": "assets/items/cobblemon--pc.png",
+      "kind": "model_texture",
+      "note": "블록 모델에 붙이는 실제 표면 그림입니다. 가방에 표시되는 완성 블록 아이콘과 모양이 달라요.",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/block/pc.png",
+      "sha256": "0139eaed6e3a2f55fc19fa57a89ab98d99cfe3f5eea4329f36a755b5a6f2305d"
+    },
+    {
+      "id": "cobblemon:oran_berry",
+      "name": "오랭열매",
+      "icon": "assets/items/cobblemon--oran_berry.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/berries/oran_berry.png",
+      "sha256": "4dd809d83513413097f076127396b5c0bdc6fa20a47d107e52b4b4275ffdff03"
+    },
+    {
+      "id": "cobblemon:pecha_berry",
+      "name": "복슝열매",
+      "icon": "assets/items/cobblemon--pecha_berry.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/berries/pecha_berry.png",
+      "sha256": "20d2ca89ddcafb5057c4e3b56ea4d76b338a2aef17d97b54fd04448b1cfd008a"
+    },
+    {
+      "id": "cobblemon:leppa_berry",
+      "name": "과사열매",
+      "icon": "assets/items/cobblemon--leppa_berry.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/berries/leppa_berry.png",
+      "sha256": "d2101e97e12d2bb2ac5d93ccb2fc42f58002ca357b9fb0efc694c2d57426cf85"
+    },
+    {
+      "id": "cobblemon:sitrus_berry",
+      "name": "자뭉열매",
+      "icon": "assets/items/cobblemon--sitrus_berry.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/berries/sitrus_berry.png",
+      "sha256": "da3700ca8ed10fe94597b14515ad1e8baaacbc4711f489f4c62418fca9eabb03"
+    },
+    {
+      "id": "cobblemon:red_apricorn",
+      "name": "빨간규토리",
+      "icon": "assets/items/cobblemon--red_apricorn.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/red_apricorn.png",
+      "sha256": "ebea645cf0b953151b4330d3af8520295ad4c8bd2785aae22e9c207b08740d6e"
+    },
+    {
+      "id": "cobblemon:yellow_apricorn",
+      "name": "노랑규토리",
+      "icon": "assets/items/cobblemon--yellow_apricorn.png",
+      "kind": "item_texture",
+      "note": "",
+      "archive": "Sunlit_Cobblebackported-forge-1.5.2-1.3_1.20.1.jar",
+      "resource": "assets/cobblemon/textures/item/yellow_apricorn.png",
+      "sha256": "0407c81bc83843212a20c0ce6d30db60d4a088043761a8b4a992f75dd06d3945"
+    }
+  ]
+}

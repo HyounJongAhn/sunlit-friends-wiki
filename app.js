@@ -34,7 +34,8 @@
   const read = (key, fallback) => { if (temporaryValues.has(key)) return temporaryValues.get(key); try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
   const save = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); temporaryValues.delete(key); return true; } catch { temporaryValues.set(key, value); return false; } };
   let season = read('sunlit-wiki-season', 'normal');
-  if (!['normal','pokemon'].includes(season)) season = 'normal';
+  if (!['normal','pokemon','rpg'].includes(season)) season = 'normal';
+  if (location.hash === '#guide/rpg') season = 'rpg';
   let searchIndex = -1, searchItems = [], toastTimer;
   const catalog = data.catalog || [];
   const catalogById = new Map(catalog.map(item => [item.id, item]));
@@ -71,7 +72,7 @@
       toast(persisted ? (isSaved ? '관심 목록에서 뺐어요.' : '이 브라우저의 관심 목록에 담았어요.') : '브라우저 저장이 막혀 이 창에서만 기억해요. 새로고침하거나 닫으면 사라져요.');
     }));
   }
-  function visibleItems() { return catalog.filter(item=>season==='pokemon' || item.season==='all'); }
+  function visibleItems() { return season==='rpg' ? [] : catalog.filter(item=>season==='pokemon' || item.season==='all'); }
   function catalogResults() {
     const query = normalize(catalogFilters.query), saved = new Set(wishes());
     const filtered = visibleItems().filter(item => (catalogFilters.category==='all'||item.category===catalogFilters.category) && (catalogFilters.stage==='all'||item.stage===catalogFilters.stage) && (!catalogFilters.starred||saved.has(item.id)) && (!query||catalogSearchText.get(item.id).includes(query)));
@@ -81,6 +82,7 @@
     bindWishes($('#item-grid'));
   }
   function catalogPage() {
+    if (season==='rpg') { rpgCatalog(); return; }
     const categories = [...new Set(visibleItems().map(item=>item.category))];
     if (!categories.includes(catalogFilters.category)) catalogFilters.category='all';
     $('#main').innerHTML = `<header class="catalog-heading"><div><div class="eyebrow">FIND YOUR NEXT LITTLE GOAL</div><h1>이건, 어디서 얻어요?</h1><p>실제 팩에서 확인한 ${catalog.length}개 아이템. 얻는 방법과 다음 목표까지.</p></div><span class="catalog-counter">${catalog.length}<small>선별 도감</small></span></header><div class="catalog-intro">전체 아이템 목록이 아니라, 처음 시작하거나 다음 목표로 삼기 좋은 아이템을 골랐어요. <strong>추천 시기와 실제 해금 조건은 달라요.</strong> 자세한 조건은 각 항목에서 확인해주세요. <a href="#guide/brewing-and-cooking">도감 밖의 양조·요리도 알아보기 →</a></div><div class="catalog-tools"><label class="catalog-search">${icon('search')}<input id="item-query" type="search" placeholder="이름, 용도, 얻는 재료로 찾아봐요" aria-label="아이템 검색" value="${escape(catalogFilters.query)}"></label><label class="stage-filter"><span>추천 시기</span><select id="item-stage"><option value="all">모든 시기</option>${Object.entries(stageNames).map(([id,name])=>`<option value="${id}" ${catalogFilters.stage===id?'selected':''}>${name}</option>`).join('')}</select></label><label class="wish-filter"><input id="only-wishes" type="checkbox" ${catalogFilters.starred?'checked':''}>${icon('star')} 관심만</label></div><div class="category-chips" aria-label="아이템 종류"><button data-category="all" aria-pressed="${catalogFilters.category==='all'}">전체</button>${categories.map(category=>`<button data-category="${escape(category)}" aria-pressed="${catalogFilters.category===category}">${escape(category)}</button>`).join('')}</div><div class="catalog-status"><span id="item-results-count" aria-live="polite"></span><span>${season==='pokemon'?'포켓몬 + 공통 아이템':'일반 시즌 · 포켓몬 아이템은 위에서 시즌을 바꿔요'}</span></div><div id="item-grid" class="item-grid"></div><div class="notice">${icon('help')}<span>별표는 이 브라우저의 관심 표시예요. 게임 가방이나 수집 상태와 연결되지 않아요. 그림은 원본 리소스이며, 일부 3D 블록은 ‘표면 그림’으로 표시합니다. <a href="assets/item-credits.json" target="_blank" rel="noopener">그림 출처</a></span></div>`;
@@ -104,6 +106,7 @@
     return `<section class="detail-section recipe-section"><h2>확인한 조합 방법</h2><p>${recipe.type==='shapeless'?'재료를 놓는 위치는 상관없어요.':'조합대에 아래 모양으로 재료를 놓아요.'}</p><div class="recipe-layout"><div class="recipe-grid">${grid}</div><div><ul>${entries.map(([symbol,value])=>`<li>${escape(describe(value))}</li>`).join('')}</ul>${recipe.resultCount?`<p>한 번 조합하면 ${escape(recipe.resultCount)}개</p>`:''}${recipe.note?`<p>${escape(recipe.note)}</p>`:''}</div></div></section>`;
   }
   function itemPage(item) {
+    if (season==='rpg') { rpgCatalog(); return; }
     const saved=wishes().includes(item.id), chances=item.chances || [], evidence=item.evidence || [];
     $('#main').innerHTML=`<div class="detail-back"><a href="#items">← 아이템 도감</a><span>${escape(item.category)}${item.season==='pokemon'?' · 포켓몬 시즌 전용':''}</span></div><header class="item-hero"><div class="item-art">${sprite(item,true)}<small>${pictureLabel(item)}</small></div><div class="item-intro"><div class="item-labels"><span class="stage-${item.stage}">${escape(item.stageLabel)}</span>${item.season==='pokemon'?'<span class="pokemon-badge">포켓몬 전용</span>':''}</div><h1>${escape(item.name)}</h1><p class="item-tagline">${escape(item.tagline)}</p><p>${escape(item.description)}</p><div class="detail-actions"><button class="button wish-button-inline ${saved?'selected':''}" data-wish="${escape(item.id)}" aria-pressed="${saved}" aria-label="${escape(item.name)} 관심 ${saved?'해제':'추가'}">${icon('star')}관심 아이템</button><button class="outline-button" id="copy-item-name">이름 복사</button><button class="outline-button" id="share-item">친구에게 보낼 주소</button></div></div></header>${item.conditions.length?`<aside class="item-condition"><strong>${icon('help')} 먼저 알아두면 좋아요</strong><ul>${lines(item.conditions)}</ul></aside>`:''}<div class="item-detail-columns"><div><section class="detail-section"><h2>어떻게 얻나요?</h2><ol>${lines(item.obtain)}</ol></section><section class="detail-section"><h2>어디에 쓰나요?</h2><ul>${lines(item.uses)}</ul></section>${recipeHTML(item.recipe)}${chances.length?`<section class="detail-section"><h2>확인한 확률과 조건</h2><ul>${lines(chances)}</ul></section>`:''}<section class="detail-section"><h2>얻었다면, 다음에는</h2><ul>${lines(item.next)}</ul></section></div><aside class="item-side"><div class="panel"><div class="eyebrow">KEEP EXPLORING</div><h2>쓰는 장면도 알아봐요</h2><p>아이템 하나에서 다음 재미로.</p><a href="#guide/${item.guide}">${escape(data.guides.find(g=>g.id===item.guide)?.title || '관련 공략')} ${icon('arrow')}</a><a href="#guide/collection-goals">함께 정하는 수집 목표 ${icon('arrow')}</a></div><p class="item-stage-note">‘${stageNames[item.stage]}’는 이 도감의 추천 시기예요. 실제 제작·획득에는 설명한 재료와 퀘스트 조건이 필요합니다.</p></aside></div><details class="item-sources"><summary>자료 출처와 확인 범위</summary><p>${escape(item.sourcePack)}와 우리의 선릿밸리 패치를 기준으로 정리했어요. 일반 모드의 최신 조합법과 다를 수 있어요.</p><code>${escape(item.id)}</code><ul>${evidence.map(row=>`<li>${escape(row.note || row.description || '')}<small>${escape(row.path || row.source || '')}</small></li>`).join('')}</ul>${item.iconNote?`<p>그림: ${escape(item.iconNote)}</p>`:''}<p>모든 조합과 보상을 실제 플레이로 끝까지 진행한 것은 아니에요. <a href="#guide/verification">검증 범위 보기</a></p><a href="assets/item-credits.json" target="_blank" rel="noopener">그림 출처 목록 ↗</a></details><div class="article-end"><a href="#items">← 다른 아이템 보기</a><a href="#play">친구들과 할 일 골라보기 →</a></div>`;
     $('#crumb').textContent=item.name;document.title=item.name+' · 선릿밸리 아이템 도감';
@@ -115,6 +118,7 @@
     return catalog.filter(item=>(role.id==='pokemon'?item.season==='pokemon':item.season==='all') && role.terms.some(term=>[item.name,item.category,item.tagline].join(' ').includes(term))).slice(0,4);
   }
   function playPage() {
+    if (season==='rpg') { rpgHome(true); return; }
     const role=roles.find(role=>role.id===selectedRole)||roles[0];
     $('#main').innerHTML=`<header class="play-heading"><div class="eyebrow">SIX FRIENDS, DIFFERENT LITTLE ADVENTURES</div><h1>같은 일을 좋아하지 않아도,<br>같이 놀 수 있으니까.</h1><p>누군가는 밭을 돌보고, 누군가는 재료를 찾고.<br>돌아와서는 오늘 얻은 보물을 같이 구경해요.</p><div class="play-actions"><a class="button" href="#guide/play-together">친구들과 할 일 자세히 보기 ${icon('arrow')}</a><button class="outline-button" id="copy-invitation">친구에게 보낼 소개 복사</button></div></header><div class="section-title"><h2>너는 어떤 쪽이 끌려?</h2><p>역할을 정해 놓을 필요는 없어요.</p></div><div class="role-choices">${roles.map(value=>`<button data-role="${value.id}" aria-pressed="${role.id===value.id}">${icon(value.icon)}<strong>${value.name}</strong><span>${value.line}</span>${value.season?'<small>포켓몬 시즌</small>':''}</button>`).join('')}</div><section class="role-detail"><div><span class="eyebrow">${escape(role.name)}</span><h2>${escape(role.early)}</h2><p>${escape(role.detail)}</p><a href="#guide/${role.guide}">어떻게 시작하는지 보기 ${icon('arrow')}</a></div><div class="role-items">${roleRecommendations(role).map(item=>`<a href="${itemHref(item)}">${sprite(item)}<span>${escape(item.name)}</span></a>`).join('')}</div></section><div class="section-title"><h2>처음부터 기다려지는 작은 보상</h2><a href="#guide/traps-and-treasure">실제 보상과 얻는 법 →</a></div><section class="treasure-demo"><div class="demo-copy"><div class="eyebrow">A PREVIEW, JUST FOR FUN</div><h2>작은 꾸러미,<br>안에는 무엇이 있을까요?</h2><p>환영 보상에서 첫 꾸러미를 받고,<br>이후에는 보물 조각 8개와 종이 1개로 만들어요.</p><div class="loot-odds">${data.treasureRewards.map(reward=>`<span>${escape(findItem(reward.id)?.name || reward.id)} <strong>${reward.percent}%</strong></span>`).join('')}</div></div><div class="demo-stage"><div id="demo-result" aria-live="polite"><img src="assets/treasure.png" alt="작은 보물 꾸러미" width="128" height="128"><strong>한번 미리 열어볼까요?</strong><small>게임과 같은 보상 비율로 보여줘요.</small></div><button class="button" id="preview-treasure">꾸러미 미리 열어보기 ${icon('spark')}</button><p>위키에서만 체험해요. 게임 아이템은 지급되지 않아요.</p></div></section><div class="promise-grid"><section><h3>처음에는 가볍게</h3><p>설치기 하나에서 시즌을 골라요. 처음 30분 안내와 첫 보상이 시작을 도와줘요.</p></section><section><h3>반복은 하나씩 줄이기</h3><p>통발을 기다리며 다른 일을 하고, 첫 스프링클러로 물주기부터 줄여봐요. 큰 자동화는 나중 목표예요.</p></section><section><h3>알고 시작하면 더 편해요</h3><p>직접 쌓아가는 마을이에요. 게임 구매·로그인은 각자 필요하고, 6인 성능과 실제 메뉴 조작 확인은 남아 있어요.</p></section></div><div class="play-end"><h2>그럼, 첫날에는 뭘 해볼까?</h2><a class="button" href="#guide/first-30-minutes">우리의 첫 30분 ${icon('arrow')}</a><a href="#items">갖고 싶은 아이템부터 골라도 좋아요 →</a></div>`;
     $('#crumb').textContent='우리, 뭐 하고 놀까요?';document.title='우리, 뭐 하고 놀까요? · 선릿밸리';
@@ -149,8 +153,37 @@
   }
   function navigation() {
     const labels = {'play-together':'친구와 할 일 자세히','collection-goals':'다음 수집 목표','first-30-minutes':'처음 30분','friend-install':'친구용 설치','game-menu':'F8 게임 메뉴','host-setup':'서버 열기','traps-and-treasure':'통발과 보물','automation':'농사와 자동화','pokemon-season':'포켓몬 시즌','troubleshooting':'문제 해결','verification':'검증과 알려진 제한','development':'개발 안내'};
-    const groups = [...new Set(data.guides.map(g => g.group))];
-    $('#navigation').innerHTML = groups.map(group => `<div class="nav-group">${escape(group)}</div>${data.guides.filter(g => g.group === group).map(g => `<a class="nav-link" href="#guide/${g.id}">${icon(g.icon)}${escape(labels[g.id] || g.title)}</a>`).join('')}`).join('');
+    const guides = data.guides.filter(g=>season!=='rpg'||g.season==='all'||g.season==='rpg');
+    const groups = [...new Set(guides.map(g => g.group))];
+    $('#navigation').innerHTML = groups.map(group => `<div class="nav-group">${escape(group)}</div>${guides.filter(g => g.group === group).map(g => `<a class="nav-link" href="#guide/${g.id}">${icon(g.icon)}${escape(labels[g.id] || g.title)}</a>`).join('')}`).join('');
+  }
+  function switchSeason(next) {
+    season=next;
+    save('sunlit-wiki-season',season);
+    render();
+  }
+  function bindSeasonLinks() {
+    $('#main').querySelectorAll('[data-switch-season]').forEach(button=>button.addEventListener('click',()=>switchSeason(button.dataset.switchSeason)));
+  }
+  function rpgHome(play = false) {
+    const cards=[
+      ['spark','내 전투 방식 찾기','전사, 사냥꾼, 원소술사. 마음에 드는 직업을 고르고 배운 스킬을 단축바에 넣어요.'],
+      ['grid','새 장비가 다음 목표','몬스터를 잡아 얻은 장비의 효과와 필요 능력치를 비교해요. 남는 장비는 수집과 제작의 다음 재료가 돼요.'],
+      ['book','길을 알려주는 퀘스트','U로 퀘스트를 열고 첫 배낭과 빵부터 챙겨요. 생활, 보관, 탐험도 원래 진행 순서에 맞춰 배워요.'],
+      ['star','레벨 5, 용병과 함께','용병에게 장비와 스킬을 준비해주고 함께 싸워요. G로 행동을 바꾸며 내 전투에 맞춰봐요.']
+    ];
+    $('#main').innerHTML=`<div class="home-heading"><div><div class="eyebrow">CRAFT TO EXILE 2 · 2.1.4</div><h1>오늘은, 어떤 장비를 얻을까?</h1></div><p>우리 여섯 명의 새로운 모험.</p></div>
+      <section class="rpg-hero" aria-labelledby="hero-title"><div class="rpg-hero-copy"><span class="hero-tag">직업 · 스킬 · 장비 파밍 · 함께 만드는 거점</span><h2 id="hero-title">같이 싸우고,<br>각자의 방식으로 강해져요.</h2><p>처음에는 공격 스킬 하나와 작은 집 한 채.<br>새 장비를 얻으면 친구에게 자랑하고,<br>다음 모험을 함께 준비해요.</p><div class="hero-buttons"><a class="button" href="#guide/rpg">RPG 처음 시작하기 ${icon('arrow')}</a><a class="hero-secondary" href="#guide/friend-install">설치 방법 보기</a></div></div><div class="rpg-build-preview" aria-label="성장 흐름 안내"><span class="rpg-preview-caption">우리의 다음 목표</span><div>${icon('spark')}<span><small>01 · 전투</small>내가 좋아하는 스킬</span></div><div>${icon('grid')}<span><small>02 · 전리품</small>한 번 더 비교할 장비</span></div><div>${icon('home')}<span><small>03 · 함께</small>돌아올 우리 거점</span></div><p>게임 화면이 아닌 성장 흐름 안내예요.</p></div></section>
+      <div class="quickbar"><span>${icon('book')} U · 퀘스트 / H · 빠른 메뉴</span><span>${icon('server')} 서버 최대 6명</span><a href="${data.release}" target="_blank" rel="noopener noreferrer">최신 설치기 받기 ↗</a></div>
+      <div class="section-title"><h2>우리, 이런 재미부터 시작해요</h2><a href="#guide/rpg">파티와 단축키까지 자세히 →</a></div><div class="rpg-feature-grid">${cards.map(([name,title,description])=>`<a class="guide-card" href="#guide/rpg"><span class="card-icon">${icon(name)}</span><h3>${title}</h3><p>${description}</p><span class="card-arrow">${icon('arrow')}</span></a>`).join('')}</div>
+      <section class="rpg-first-night"><div><span class="eyebrow">첫날에는 이것만</span><h2>퀘스트 하나, 전투 한 번,<br>친구들과 작은 거점.</h2><p>설치기에서 <strong>RPG 시즌 · Craft to Exile 2</strong>를 골라요. 공식 런처에서도 같은 RPG 항목으로 실행한 뒤, U를 눌러 첫 퀘스트를 읽어요.</p><p>서버 정원과 던전·전투 파티의 입장 조건은 달라요. 함께 들어갈 때는 원본 화면의 조건을 확인해요.</p></div><ol><li><strong>U로 첫 보상 받기</strong><span>철 배낭과 빵으로 시작해요.</span></li><li><strong>스킬을 배운 뒤 장착하기</strong><span>전투 파티와 퀘스트 팀도 각각 확인해요.</span></li><li><strong>가까운 곳부터 함께 탐험</strong><span>밤이 되면 돌아올 집과 공용 상자를 마련해요.</span></li></ol></section>
+      <div class="rpg-scope-note"><strong>이번에는 별도의 RPG 시즌이에요.</strong><p>선릿밸리·포켓몬 월드와 캐릭터는 그대로 두고 새로 시작해요. 선릿밸리의 통발 보물, 가방 구매 규칙, 기본 마을과 집터는 RPG에 적용되지 않아요. RPG에서는 원본 퀘스트·경제·성장을 따라가요.</p><a href="#items">RPG 아이템과 조합은 어디서 볼까요? →</a></div><div class="notice">${icon('help')}<span>처음에는 셰이더 없이 시작해요. 설치기 다운로드는 초대받은 GitHub 계정으로 열거나 친구에게 파일을 받아요. <a href="#guide/verification">확인한 범위와 남은 검증</a></span></div>`;
+    $('#crumb').textContent=play?'RPG, 뭐 하고 놀까요?':'RPG 첫 화면';
+    document.title='우리의 RPG · 같이 보는 공략';
+  }
+  function rpgCatalog() {
+    $('#main').innerHTML=`<header class="article-header"><div class="eyebrow">RPG 시즌 · 아이템 찾기</div><h1>새 장비와 조합은 게임에서 봐요.</h1><p>이 웹사이트에 RPG 전체 아이템 도감은 아직 준비되지 않았어요.</p></header><div class="rpg-feature-grid"><section class="panel"><h2>조합과 쓰임새는 JEI</h2><p>인벤토리 옆 아이템 검색에서 이름을 찾아요. 아이템의 조합·사용처를 보고, 키가 겹치면 설정 → 조작에서 현재 키를 확인해요.</p></section><section class="panel"><h2>얻는 순서는 퀘스트</h2><p>U로 원본 퀘스트를 열어요. 어떤 장비와 재료가 필요한지, 보상은 어디서 받는지 해당 퀘스트에서 확인해요.</p></section><section class="panel"><h2>유니크 장비 수집</h2><p>RPG 메뉴의 유니크 장비 도감을 확인해요. 등록에 분해가 필요한 장비도 있으니, 지금 쓰는 장비를 없애기 전에 설명을 읽어요.</p></section><section class="panel"><h2>현재 웹 도감의 범위</h2><p>기존 ${catalog.length}개 아이템 설명은 선릿밸리 일반·포켓몬 시즌 전용이에요. 같은 이름의 아이템이 있어도 RPG의 획득법과 조합은 다를 수 있어요.</p><button class="outline-button" data-switch-season="normal">선릿밸리 도감으로 전환</button></section></div><div class="article-end"><a href="#guide/rpg">RPG 가방·도감·용병 안내 →</a><a href="#home">RPG 첫 화면으로</a></div>`;
+    $('#crumb').textContent='RPG 아이템 안내';document.title='RPG 아이템 안내 · 같이 보는 공략';bindSeasonLinks();
   }
   function checklist() {
     const completed = read('sunlit-wiki-check-' + season, []);
@@ -158,6 +191,7 @@
     return `<div class="checklist">${steps.map((step, i) => `<label><input type="checkbox" data-step="${i}" ${checked.includes(i) ? 'checked' : ''}><span>${step[0]}<small>${step[1]}</small></span></label>`).join('')}</div><div class="check-progress"><span id="check-count">${checked.filter(i => Number.isInteger(i) && i >= 0 && i < steps.length).length} / 4 준비했어요</span><button class="text-button" id="reset-checklist">처음부터 체크하기</button></div>`;
   }
   function home() {
+    if (season==='rpg') { rpgHome(); return; }
     const pokemon = season === 'pokemon';
     const saved = new Set(wishes());
     const featured = ['friend-install', 'town', 'traps-and-treasure', 'pokemon-season', 'host-setup', 'troubleshooting'];
@@ -184,9 +218,15 @@
     }));
   }
   function article(guide) {
+    if(season==='rpg' && ['sunlit','pokemon'].includes(guide.season)) {
+      $('#main').innerHTML=`<header class="article-header"><div class="eyebrow">선릿밸리 전용 공략</div><h1>${escape(guide.title)}</h1><p>이 공략은 ${guide.season==='pokemon'?'선릿밸리 포켓몬':'선릿밸리 일반·포켓몬'} 시즌의 내용이에요. RPG 시즌에는 적용되지 않아요.</p></header><section class="panel rpg-scope-note"><h2>지금은 RPG 시즌을 보고 있어요.</h2><p>직업, 장비, 퀘스트와 용병은 RPG 시작 안내에서 확인해요. 이 선릿밸리 공략을 읽으려면 시즌을 바꿔주세요.</p><div class="hero-buttons"><a class="button" href="#guide/rpg">RPG 안내 보기</a><button class="outline-button" data-switch-season="${guide.season==='pokemon'?'pokemon':'normal'}">선릿밸리 시즌으로 전환</button></div></section>`;
+      $('#crumb').textContent='다른 시즌의 공략';document.title=guide.title+' · 선릿밸리 전용';bindSeasonLinks();return;
+    }
     $('#main').innerHTML = `<header class="article-header"><div class="eyebrow">${escape(guide.group)}${guide.season === 'pokemon' ? ' · 포켓몬 시즌' : ''}</div><h1>${escape(guide.title)}</h1><p>${escape(guide.description)}</p><div class="article-tools"><button id="copy-article">이 공략 주소 복사</button><a href="${data.repository}/blob/main/docs/${guide.id}.md" target="_blank" rel="noopener noreferrer">GitHub 원문 ↗</a>${guide.id === 'first-30-minutes' ? '<button id="copy-command">/sunlit 명령어 복사</button>' : ''}</div></header><div class="article-layout"><article class="prose">${guide.html}<div class="article-end"><a href="#home">← 공략 첫 화면</a><a href="#guide/troubleshooting">막힌 곳이 있나요? →</a></div></article><aside class="toc" aria-label="이 공략의 목차"><strong>이 페이지에서</strong>${guide.headings.map(h => `<button data-heading="${h.id}">${escape(h.title)}</button>`).join('')}</aside></div>`;
     $('#crumb').textContent = guide.title;
-    document.title = guide.title + ' · 우리의 선릿밸리';
+    const scope={sunlit:'선릿밸리 일반·포켓몬 전용',pokemon:'선릿밸리 포켓몬 전용',rpg:'Craft to Exile 2 RPG 전용',all:'모든 시즌 공통 안내'};
+    $('.article-header .eyebrow').textContent=guide.group+' · '+(scope[guide.season]||'선릿밸리 공략');
+    document.title = guide.title + (guide.season==='rpg'?' · 우리의 RPG':' · 우리의 선릿밸리');
     $('#copy-article').addEventListener('click', () => copy(data.publicWiki+'#guide/'+guide.id));
     $('#copy-command')?.addEventListener('click', () => copy('/sunlit'));
     $('#main').querySelectorAll('[data-heading]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.heading)?.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'})));
@@ -194,6 +234,12 @@
   function closeNavigation() { $('#sidebar').classList.remove('open'); $('#backdrop').hidden = true; $('#mobile-menu').setAttribute('aria-expanded', 'false'); }
   function render() {
     document.body.classList.toggle('pokemon', season === 'pokemon');
+    document.body.classList.toggle('rpg', season === 'rpg');
+    $('#season-label').textContent=season==='rpg'?'우리의 RPG 공략':'선릿밸리 공략';
+    $('#catalog-nav-count').textContent=season==='rpg'?'게임 내 안내':catalog.length || '';
+    $('#search-input').placeholder=season==='rpg'?'직업, 용병, 퀘스트, 서버 접속…':'통발, 첫 보상, 서버 접속…';
+    $('.sidebar-note p').textContent=season==='rpg'?'함께 모험하고, 각자의 방식으로 성장해요.':'농사도 탐험도 각자 좋아하는 만큼.';
+    navigation();
     document.querySelectorAll('[data-season]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.season === season)));
     const id = location.hash.startsWith('#guide/') ? location.hash.slice(7) : '';
     const guide = data.guides.find(g => g.id === id);
@@ -216,9 +262,10 @@
   ];
   function search() {
     const query = normalize($('#search-input').value.trim());
-    const results = searchIndexEntries.map(entry => ({...entry,score: !query ? (entry.item ? 0 : 1) : entry.item && entry.normalizedTitle===query ? 7 : entry.normalizedTitle.includes(query) ? (entry.item ? 5 : 4) : entry.keywords.includes(query) ? 3 : entry.body.includes(query) ? 1 : 0})).filter(item => item.score).sort((a,b) => b.score - a.score);
+    const entries=searchIndexEntries.filter(entry=>season!=='rpg'||(!entry.item&&['all','rpg'].includes(entry.season)));
+    const results = entries.map(entry => ({...entry,score: !query ? (entry.item ? 0 : 1) : entry.item && entry.normalizedTitle===query ? 7 : entry.normalizedTitle.includes(query) ? (entry.item ? 5 : 4) : entry.keywords.includes(query) ? 3 : entry.body.includes(query) ? 1 : 0})).filter(item => item.score).sort((a,b) => b.score - a.score);
     $('#search-status').textContent = query ? `${results.length}개의 공략·아이템을 찾았어요` : '자주 찾는 공략 · 아이템 이름도 검색할 수 있어요';
-    $('#search-results').innerHTML = results.length ? results.map(g => `<a class="search-result" href="${g.href}"><small>${escape(g.group)}${g.season === 'pokemon' ? ' · 포켓몬' : ''}</small><strong>${escape(g.title)}</strong><p>${escape(g.description)}</p></a>`).join('') : '<p class="empty-search">맞는 공략이나 아이템이 아직 없어요.<br>‘접속’, ‘통발’, ‘몬스터볼’처럼 짧게 검색해보세요.</p>';
+    $('#search-results').innerHTML = results.length ? results.map(g => `<a class="search-result" href="${g.href}"><small>${escape(g.group)}${g.season==='rpg'?' · RPG':g.season==='pokemon'?' · 포켓몬':g.season==='sunlit'||g.item?' · 선릿밸리':''}</small><strong>${escape(g.title)}</strong><p>${escape(g.description)}</p></a>`).join('') : `<p class="empty-search">맞는 공략이나 아이템이 아직 없어요.<br>${season==='rpg'?'‘접속’, ‘직업’, ‘용병’':'‘접속’, ‘통발’, ‘몬스터볼’'}처럼 짧게 검색해보세요.</p>`;
     searchItems = [...$('#search-results').querySelectorAll('a')]; searchIndex = -1;
     searchItems.forEach(a => a.addEventListener('click', () => $('#search-dialog').close()));
   }
@@ -252,7 +299,7 @@
   $('#mobile-menu').addEventListener('click', () => { const opened = $('#sidebar').classList.toggle('open'); $('#backdrop').hidden = !opened; $('#mobile-menu').setAttribute('aria-expanded', String(opened)); });
   $('#navigation').addEventListener('click', event => { if (event.target.closest('a')) closeNavigation(); });
   $('#backdrop').addEventListener('click', closeNavigation);
-  document.querySelectorAll('[data-season]').forEach(button => button.addEventListener('click', () => { season = button.dataset.season; save('sunlit-wiki-season', season); render(); }));
+  document.querySelectorAll('[data-season]').forEach(button => button.addEventListener('click', () => switchSeason(button.dataset.season)));
   window.addEventListener('hashchange', render);
   $('.skip').addEventListener('click', event => { event.preventDefault(); $('#main').focus(); $('#main').scrollIntoView({block:'start'}); });
   $('#version').textContent = `v${data.version} · ${data.updated}`;

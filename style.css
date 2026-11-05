@@ -304,49 +304,7 @@ select:focus-visible { outline:3px solid #bd8a3f; outline-offset:3px; }
 .item-more { font-size:13px; }
 .sidebar-note, .sidebar-note p, .repository { font-size:12px; }
 @media(max-width:680px) { .item-card p { font-size:14px; } .item-more { font-size:12px; } }
-/* Craft to Exile keeps its own progression and a clearly separate season. */
-.rpg { --green:#86543b; }
-.rpg .eyebrow { color:#805a40; }
-.rpg .brand { color:#654432; }
-.rpg .season-picker button[aria-pressed=true] { background:#f0e2d4; color:#69452d; }
-.rpg .nav-link.active { background:#efe4d7; color:#74472d; }
-.rpg .card-icon { background:#f1e3d2; color:#875d38; }
-.rpg-hero { display:grid; grid-template-columns:1.3fr 1fr; align-items:center; gap:30px; padding:42px; overflow:hidden; border:1px solid #d9c6ab; border-radius:18px; background:radial-gradient(ellipse at 100% 0%,#ead2a4 0,transparent 55%),linear-gradient(120deg,#f9f1df,#eee1cd); }
-.rpg-hero-copy h2 { font-size:40px; line-height:1.45; letter-spacing:-1.5px; margin:21px 0 14px; color:#4e3b2e; word-break:keep-all; }
-.rpg-hero-copy>p { font-size:17px; line-height:1.9; color:#705c48; margin-bottom:26px; }
-.rpg .hero-tag { border-color:#c8ae88; color:#765637; background:#fffaf180; }
-.rpg .button { background:#86543b; }
-.rpg .button:hover { background:#65402e; }
-.rpg .hero-secondary { color:#765339; }
-.rpg-build-preview { padding:26px; background:#fcf8eecc; border:1px solid #d9c7ac; border-radius:14px; box-shadow:0 14px 32px #4b362614; transform:rotate(2deg); }
-.rpg-preview-caption { display:block; color:#8d7050; font-size:13px; letter-spacing:2px; margin-bottom:20px; }
-.rpg-build-preview>div { display:flex; align-items:center; gap:18px; padding:15px 0; border-bottom:1px solid #e4d7c4; }
-.rpg-build-preview svg { width:32px; height:32px; color:#9b7440; flex-shrink:0; }
-.rpg-build-preview small { display:block; color:#8b7258; font-size:12px; margin-bottom:5px; }
-.rpg-build-preview span { font-size:17px; font-weight:650; color:#5a4836; }
-.rpg-build-preview>p { font-size:12px; color:#88735c; margin:19px 0 0; }
-.rpg-feature-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
-.rpg-feature-grid .panel>p { font-size:16px; line-height:1.85; color:#76634e; }
-.rpg-first-night { display:grid; grid-template-columns:1fr 1fr; gap:35px; padding:30px; background:#f3ecdf; border:1px solid #e0d3bd; border-radius:14px; margin-top:28px; }
-.rpg-first-night h2 { font-size:26px; line-height:1.5; margin:12px 0; word-break:keep-all; }
-.rpg-first-night p { font-size:16px; line-height:1.9; color:#78644d; }
-.rpg-first-night ol { margin:0; padding-left:24px; align-self:center; }
-.rpg-first-night li { padding:12px 0 12px 8px; }
-.rpg-first-night li::marker { color:#a07844; font-weight:700; }
-.rpg-first-night strong { font-size:17px; }
-.rpg-first-night li span { display:block; margin-top:7px; font-size:15px; color:#78644d; }
-.rpg-scope-note { padding:22px 25px; background:#fffaf0; border:1px solid #dfcdb0; border-left:4px solid #a27642; border-radius:8px; margin-top:27px; font-size:16px; line-height:1.85; }
-.rpg-scope-note p { margin:8px 0 14px; color:#756049; }
-.rpg-scope-note>a { color:#805036; text-decoration:underline; text-underline-offset:4px; }
-@media(max-width:1050px) { .rpg-hero { grid-template-columns:1fr; padding:30px; } .rpg-build-preview { display:none; } .rpg-first-night { gap:20px; } }
-@media(max-width:680px) {
-  .topbar { height:auto; min-height:108px; flex-wrap:wrap; padding-top:10px; padding-bottom:10px; }
-  .season-picker { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; }
-  .season-picker button { min-height:38px; justify-content:center; white-space:nowrap; font-size:12px; }
-  .rpg-hero { padding:25px 22px; border-radius:12px; }
-  .rpg-hero-copy h2 { font-size:31px; }
-  .rpg-hero-copy>p { font-size:16px; }
-  .rpg-feature-grid, .rpg-first-night { grid-template-columns:1fr; }
-  .rpg-first-night { padding:23px; gap:10px; }
-  .rpg-scope-note { padding:19px; }
-}
+.other-world { margin-top:24px; padding-top:15px; border-top:1px solid #ded6c4; border-radius:0; }
+.other-world small { display:block; font-size:12px; color:#746958; margin-top:3px; }
+.migration-panel { max-width:740px; padding:30px; }
+.migration-panel p { margin-bottom:25px; }
